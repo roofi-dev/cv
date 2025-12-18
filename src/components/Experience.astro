@@ -1,0 +1,122 @@
+---
+import type { Experience } from '../lib/sanity';
+
+interface Props {
+  experiences: Experience[];
+}
+
+const { experiences } = Astro.props;
+
+function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+}
+---
+
+<section id="experience" class="py-20 lg:py-32 relative">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="section-title">
+        Work <span class="gradient-text">Experience</span>
+      </h2>
+      <p class="section-subtitle max-w-2xl mx-auto">
+        My professional journey and the companies I've worked with
+      </p>
+    </div>
+    
+    <div class="relative">
+      <!-- Timeline line -->
+      <div class="absolute left-0 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-secondary to-accent transform md:-translate-x-1/2"></div>
+      
+      <div class="space-y-12">
+        {experiences.map((exp, index) => (
+          <div class={`experience-item relative flex flex-col md:flex-row gap-8 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
+            <!-- Timeline dot -->
+            <div class="absolute left-0 md:left-1/2 w-4 h-4 rounded-full bg-primary transform -translate-x-1/2 md:-translate-x-1/2 mt-6 z-10 ring-4 dark:ring-dark-bg ring-light-bg">
+              {exp.current && (
+                <span class="absolute inset-0 rounded-full bg-primary animate-ping opacity-75"></span>
+              )}
+            </div>
+            
+            <!-- Content -->
+            <div class={`md:w-1/2 ${index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'} pl-8 md:pl-0`}>
+              <div class="card group hover:border-primary/50 border border-transparent">
+                <!-- Header -->
+                <div class="flex items-start justify-between mb-4">
+                  <div>
+                    <h3 class="text-xl font-display font-semibold group-hover:text-primary transition-colors">
+                      {exp.position}
+                    </h3>
+                    <p class="text-primary font-medium">{exp.company}</p>
+                  </div>
+                  {exp.current && (
+                    <span class="px-3 py-1 text-xs font-medium bg-green-500/10 text-green-500 rounded-full">
+                      Current
+                    </span>
+                  )}
+                </div>
+                
+                <!-- Date -->
+                <div class="flex items-center gap-2 text-sm opacity-60 mb-4">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span>
+                    {formatDate(exp.startDate)} - {exp.current ? 'Present' : formatDate(exp.endDate!)}
+                  </span>
+                </div>
+                
+                <!-- Description -->
+                <p class="opacity-80 mb-4 leading-relaxed">
+                  {exp.description}
+                </p>
+                
+                <!-- Technologies -->
+                {exp.technologies && exp.technologies.length > 0 && (
+                  <div class="flex flex-wrap gap-2">
+                    {exp.technologies.map((tech) => (
+                      <span class="px-3 py-1 text-xs font-medium dark:bg-primary/10 bg-primary/5 text-primary rounded-full">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+            
+            <!-- Spacer for alternating layout -->
+            <div class="hidden md:block md:w-1/2"></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap, ScrollTrigger } from '../lib/animations';
+  
+  // Set initial states with alternating directions
+  const items = gsap.utils.toArray('.experience-item') as HTMLElement[];
+  items.forEach((item, i) => {
+    gsap.set(item, { opacity: 0, x: i % 2 === 0 ? 40 : -40 });
+  });
+  
+  // Single ScrollTrigger for Experience section
+  ScrollTrigger.create({
+    trigger: '#experience',
+    start: 'top 75%',
+    once: true,
+    onEnter: () => {
+      items.forEach((item, i) => {
+        gsap.to(item, {
+          opacity: 1,
+          x: 0,
+          duration: 0.6,
+          delay: i * 0.15,
+          ease: 'power2.out',
+        });
+      });
+    },
+  });
+</script>

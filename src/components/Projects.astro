@@ -1,0 +1,137 @@
+---
+import type { Project } from '../lib/sanity';
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+---
+
+<section id="projects" class="py-20 lg:py-32 relative overflow-hidden">
+  <!-- Background decoration - Optimized blur -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-0 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-2xl"></div>
+    <div class="absolute bottom-1/4 left-0 w-72 h-72 bg-primary/10 rounded-full blur-2xl"></div>
+  </div>
+  
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="text-center mb-16">
+      <h2 class="section-title">
+        Featured <span class="gradient-text">Projects</span>
+      </h2>
+      <p class="section-subtitle max-w-2xl mx-auto">
+        A selection of projects I've worked on that showcase my skills
+      </p>
+    </div>
+    
+    <div class="grid md:grid-cols-2 gap-8">
+      {projects.map((project, index) => (
+        <div class={`project-card group ${project.featured ? 'md:col-span-2 lg:col-span-1' : ''}`}>
+          <div class="card h-full flex flex-col overflow-hidden border border-transparent hover:border-primary/30 transition-all duration-500">
+            <!-- Project Image Placeholder -->
+            <div class="relative h-48 md:h-56 overflow-hidden rounded-xl mb-6 bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20">
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div class="text-6xl font-display font-bold opacity-20">
+                  {project.title.charAt(0)}
+                </div>
+              </div>
+              
+              <!-- Overlay on hover -->
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
+                <div class="flex gap-3">
+                  {project.liveUrl && (
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="px-4 py-2 bg-white text-black rounded-lg text-sm font-medium hover:bg-primary hover:text-white transition-colors"
+                    >
+                      Live Demo
+                    </a>
+                  )}
+                  {project.githubUrl && (
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="px-4 py-2 bg-white/20 text-white rounded-lg text-sm font-medium hover:bg-white hover:text-black transition-colors backdrop-blur-sm"
+                    >
+                      GitHub
+                    </a>
+                  )}
+                </div>
+              </div>
+              
+              {project.featured && (
+                <div class="absolute top-4 right-4">
+                  <span class="px-3 py-1 text-xs font-medium bg-primary text-white rounded-full shadow-lg">
+                    Featured
+                  </span>
+                </div>
+              )}
+            </div>
+            
+            <!-- Content -->
+            <div class="flex-1 flex flex-col">
+              <h3 class="text-xl font-display font-semibold mb-3 group-hover:text-primary transition-colors">
+                {project.title}
+              </h3>
+              
+              <p class="opacity-80 mb-4 flex-1 leading-relaxed">
+                {project.description}
+              </p>
+              
+              <!-- Technologies -->
+              <div class="flex flex-wrap gap-2 mt-auto">
+                {project.technologies.map((tech) => (
+                  <span class="px-3 py-1 text-xs font-medium dark:bg-dark-bg bg-gray-100 rounded-full">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+    
+    <!-- View More Button -->
+    <div class="text-center mt-12">
+      <a
+        href="https://github.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-secondary inline-flex items-center gap-2"
+      >
+        <span>View All Projects</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap, ScrollTrigger } from '../lib/animations';
+  
+  // Set initial states
+  gsap.set('.project-card', { opacity: 0, y: 40 });
+  
+  // Single ScrollTrigger for Projects section
+  ScrollTrigger.create({
+    trigger: '#projects',
+    start: 'top 75%',
+    once: true,
+    onEnter: () => {
+      gsap.to('.project-card', {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        stagger: 0.12,
+        ease: 'power2.out',
+      });
+    },
+  });
+</script>

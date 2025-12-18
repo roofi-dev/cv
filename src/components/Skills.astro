@@ -1,0 +1,147 @@
+---
+import type { Skill } from '../lib/sanity';
+
+interface Props {
+  skills: Skill[];
+}
+
+const { skills } = Astro.props;
+
+// Group skills by category
+const groupedSkills = skills.reduce((acc, skill) => {
+  if (!acc[skill.category]) {
+    acc[skill.category] = [];
+  }
+  acc[skill.category].push(skill);
+  return acc;
+}, {} as Record<string, Skill[]>);
+
+const categoryIcons: Record<string, string> = {
+  Frontend: 'M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4',
+  Backend: 'M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01',
+  Database: 'M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4',
+  DevOps: 'M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z',
+  Design: 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z',
+  Tools: 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z',
+};
+
+const categoryColors: Record<string, string> = {
+  Frontend: 'from-blue-500 to-cyan-500',
+  Backend: 'from-green-500 to-emerald-500',
+  Database: 'from-orange-500 to-amber-500',
+  DevOps: 'from-purple-500 to-violet-500',
+  Design: 'from-pink-500 to-rose-500',
+  Tools: 'from-gray-500 to-slate-500',
+};
+---
+
+<section id="skills" class="py-20 lg:py-32 relative">
+  <!-- Background decoration - Optimized blur -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-1/2 left-0 w-72 h-72 bg-primary/10 rounded-full blur-2xl"></div>
+    <div class="absolute bottom-0 right-0 w-96 h-96 bg-secondary/10 rounded-full blur-2xl"></div>
+  </div>
+  
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="text-center mb-16">
+      <h2 class="section-title">
+        My <span class="gradient-text">Skills</span>
+      </h2>
+      <p class="section-subtitle max-w-2xl mx-auto">
+        Technologies and tools I've mastered throughout my career
+      </p>
+    </div>
+    
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {Object.entries(groupedSkills).map(([category, categorySkills]) => (
+        <div class="skill-category card">
+          <div class="flex items-center gap-3 mb-6">
+            <span class={`w-12 h-12 rounded-xl bg-gradient-to-br ${categoryColors[category] || 'from-primary to-secondary'} flex items-center justify-center shadow-lg`}>
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={categoryIcons[category] || categoryIcons.Tools} />
+              </svg>
+            </span>
+            <h3 class="text-xl font-display font-semibold">{category}</h3>
+          </div>
+          
+          <div class="space-y-4">
+            {categorySkills.map((skill) => (
+              <div class="skill-item">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="font-medium">{skill.name}</span>
+                  <span class="text-sm opacity-60">{skill.level}%</span>
+                </div>
+                <div class="h-2 rounded-full dark:bg-dark-bg bg-gray-200 overflow-hidden">
+                  <div 
+                    class={`skill-bar h-full rounded-full bg-gradient-to-r ${categoryColors[category] || 'from-primary to-secondary'}`}
+                    style={`width: 0%`}
+                    data-level={skill.level}
+                  ></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+    
+    <!-- Additional Skills Tags -->
+    <div class="mt-16 text-center">
+      <h3 class="text-xl font-display font-semibold mb-6">Other Technologies I Work With</h3>
+      <div class="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto">
+        {['REST APIs', 'GraphQL', 'WebSockets', 'Redis', 'Elasticsearch', 'CI/CD', 'Agile', 'Scrum', 'TDD', 'Microservices'].map((tag) => (
+          <span class="skill-tag px-4 py-2 rounded-full dark:bg-dark-surface bg-light-surface shadow-md text-sm font-medium hover:shadow-lg transition-shadow duration-300 hover:text-primary cursor-default">
+            {tag}
+          </span>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap, ScrollTrigger } from '../lib/animations';
+  
+  // Set initial states
+  gsap.set('.skill-category', { opacity: 0, y: 40 });
+  gsap.set('.skill-tag', { opacity: 0, scale: 0.9 });
+  
+  // Single ScrollTrigger for skill categories (batch animation)
+  ScrollTrigger.create({
+    trigger: '#skills',
+    start: 'top 75%',
+    once: true,
+    onEnter: () => {
+      // Animate categories with stagger
+      gsap.to('.skill-category', {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: 'power2.out',
+      });
+      
+      // Animate skill bars after a short delay
+      const bars = gsap.utils.toArray('.skill-bar') as HTMLElement[];
+      bars.forEach((bar, i) => {
+        const level = bar.dataset.level || '0';
+        gsap.to(bar, {
+          width: `${level}%`,
+          duration: 1,
+          delay: 0.3 + (i * 0.03),
+          ease: 'power2.out',
+        });
+      });
+      
+      // Animate tags
+      gsap.to('.skill-tag', {
+        opacity: 1,
+        scale: 1,
+        duration: 0.4,
+        stagger: 0.03,
+        delay: 0.5,
+        ease: 'back.out(1.5)',
+      });
+    },
+  });
+</script>
