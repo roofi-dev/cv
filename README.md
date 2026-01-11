@@ -82,6 +82,37 @@ npm create sanity@latest -- --project-id YOUR_PROJECT_ID --dataset production
 
 **Note:** The website works without Sanity - it uses fallback demo data if CMS is not configured.
 
+## Deploy to GitHub Pages
+
+### 1. Update Configuration
+
+Edit `astro.config.mjs` and replace `YOUR_GITHUB_USERNAME` with your actual GitHub username:
+
+```js
+site: 'https://YOUR_GITHUB_USERNAME.github.io',
+base: '/cv',  // or your repository name
+```
+
+### 2. Push to GitHub
+
+```bash
+git init
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin https://github.com/YOUR_USERNAME/cv.git
+git push -u origin main
+```
+
+### 3. Enable GitHub Pages
+
+1. Go to your repository on GitHub
+2. Navigate to **Settings** → **Pages**
+3. Under "Build and deployment", select **GitHub Actions**
+4. The workflow will automatically deploy on every push to `main`
+
+Your site will be live at: `https://YOUR_USERNAME.github.io/cv/`
+
 ## Commands
 
 | Command           | Action                                      |
