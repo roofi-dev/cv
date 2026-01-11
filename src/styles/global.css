@@ -25,16 +25,9 @@
     @apply font-sans antialiased transition-colors duration-300;
   }
   
-  /* Fallback: ensure hero content is visible even if JS fails */
-  .hero-badge,
-  .hero-title,
-  .hero-subtitle,
-  .hero-description,
-  .hero-buttons,
-  .hero-social,
-  #hero-visual {
-    opacity: 1 !important;
-    transform: none !important;
+  /* Fix scroll position for sections - account for fixed navbar */
+  section[id] {
+    scroll-margin-top: 80px;
   }
   
   .dark {
