@@ -32,10 +32,12 @@
   
   .dark {
     @apply bg-dark-bg text-dark-text;
+    --navbar-bg: #0f172a;
   }
   
   .light {
     @apply bg-light-bg text-light-text;
+    --navbar-bg: #f8fafc;
   }
 }
 
