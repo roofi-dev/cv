@@ -9,7 +9,7 @@ const navLinks = [
 ];
 ---
 
-<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 shadow-md bg-white dark:bg-slate-900">
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 shadow-md">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16 md:h-20">
       <!-- Logo -->
@@ -110,19 +110,25 @@ const navLinks = [
     });
   });
   
-  // Navbar scroll effect
+  // Navbar theme and scroll effect
   const navbar = document.getElementById('navbar');
-  let lastScroll = 0;
   
-  window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset;
-    
-    if (currentScroll > 50) {
-      navbar?.classList.add('dark:bg-dark-bg/90', 'bg-light-bg/90', 'backdrop-blur-lg', 'shadow-lg');
+  const updateNavbarTheme = () => {
+    const isDark = document.documentElement.classList.contains('dark');
+    if (isDark) {
+      navbar?.style.setProperty('background-color', '#0f172a');
     } else {
-      navbar?.classList.remove('dark:bg-dark-bg/90', 'bg-light-bg/90', 'backdrop-blur-lg', 'shadow-lg');
+      navbar?.style.setProperty('background-color', '#ffffff');
     }
-    
-    lastScroll = currentScroll;
-  });
+  };
+  
+  // Initial theme
+  updateNavbarTheme();
+  
+  // Listen for theme changes
+  document.addEventListener('theme-toggle', updateNavbarTheme);
+  
+  // Observe class changes on html element
+  const observer = new MutationObserver(updateNavbarTheme);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 </script>
