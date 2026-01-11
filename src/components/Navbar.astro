@@ -9,7 +9,7 @@ const navLinks = [
 ];
 ---
 
-<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 dark:bg-dark-bg/95 bg-light-bg/95 backdrop-blur-lg">
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 dark:bg-dark-bg bg-light-bg shadow-md">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16 md:h-20">
       <!-- Logo -->
@@ -20,7 +20,7 @@ const navLinks = [
       <!-- Desktop Navigation -->
       <div class="hidden md:flex items-center space-x-1">
         {navLinks.map((link) => (
-          <a href={link.href} class="nav-link">
+          <a href={link.href} class="nav-link dark:text-dark-text text-light-text">
             {link.label}
           </a>
         ))}
