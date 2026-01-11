@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://roofi-dev.github.io',
+  site: 'https://roofi-dev.netlify.app',
   base: '/',
   output: 'static',
   vite: {

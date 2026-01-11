@@ -171,25 +171,30 @@ const { info } = Astro.props;
     }
   });
   
-  // Set initial states (prevents flash of unstyled content)
-  gsap.set(['.hero-badge', '.hero-title', '.hero-subtitle', '.hero-description', '.hero-buttons', '.hero-social'], {
-    opacity: 0,
-    y: 30,
-  });
-  gsap.set('#hero-visual', { opacity: 0, scale: 0.9 });
+  // Set initial states and animate
+  const heroElements = document.querySelectorAll('.hero-badge, .hero-title, .hero-subtitle, .hero-description, .hero-buttons, .hero-social');
+  const heroVisual = document.getElementById('hero-visual');
   
-  // Animate in sequence using timeline (more performant than individual tweens)
-  heroTl
-    .to('.hero-badge', { opacity: 1, y: 0, duration: 0.5 }, 0.1)
-    .to('.hero-title', { opacity: 1, y: 0 }, 0.2)
-    .to('.hero-subtitle', { opacity: 1, y: 0 }, 0.35)
-    .to('.hero-description', { opacity: 1, y: 0 }, 0.5)
-    .to('.hero-buttons', { opacity: 1, y: 0 }, 0.65)
-    .to('.hero-social', { opacity: 1, y: 0 }, 0.8)
-    .to('#hero-visual', { 
-      opacity: 1, 
-      scale: 1, 
-      duration: 0.9,
-      ease: 'back.out(1.4)' 
-    }, 0.3);
+  if (heroElements.length > 0) {
+    gsap.set(heroElements, { opacity: 0, y: 30 });
+    if (heroVisual) gsap.set(heroVisual, { opacity: 0, scale: 0.9 });
+    
+    // Animate in sequence
+    heroTl
+      .to('.hero-badge', { opacity: 1, y: 0, duration: 0.5 }, 0.1)
+      .to('.hero-title', { opacity: 1, y: 0 }, 0.2)
+      .to('.hero-subtitle', { opacity: 1, y: 0 }, 0.35)
+      .to('.hero-description', { opacity: 1, y: 0 }, 0.5)
+      .to('.hero-buttons', { opacity: 1, y: 0 }, 0.65)
+      .to('.hero-social', { opacity: 1, y: 0 }, 0.8);
+    
+    if (heroVisual) {
+      heroTl.to(heroVisual, { 
+        opacity: 1, 
+        scale: 1, 
+        duration: 0.9,
+        ease: 'back.out(1.4)' 
+      }, 0.3);
+    }
+  }
 </script>
