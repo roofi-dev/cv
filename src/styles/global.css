@@ -30,11 +30,27 @@
     scroll-margin-top: 80px;
   }
   
-  .dark {
+  html.dark {
     @apply bg-slate-900 text-white;
   }
   
-  .light {
+  html.light {
+    @apply bg-light-bg text-light-text;
+  }
+  
+  html.dark body {
+    @apply bg-slate-900 text-white;
+  }
+  
+  html.light body {
+    @apply bg-light-bg text-light-text;
+  }
+  
+  html.dark section {
+    @apply bg-slate-900 text-white;
+  }
+  
+  html.light section {
     @apply bg-light-bg text-light-text;
   }
 }
@@ -55,11 +71,11 @@
     @apply p-6 rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl;
   }
   
-  .dark .card {
+  html.dark .card {
     @apply bg-slate-800 hover:shadow-primary/10;
   }
   
-  .light .card {
+  html.light .card {
     @apply bg-light-surface;
   }
   

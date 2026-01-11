@@ -118,14 +118,104 @@ const navLinks = [
     const navLinks = navbar?.querySelectorAll('.nav-link');
     const icons = navbar?.querySelectorAll('svg');
     
+    // Select all elements that need dark mode styling
+    const cards = document.querySelectorAll('.card');
+    const skillTags = document.querySelectorAll('.skill-tag');
+    const techTags = document.querySelectorAll('.project-card span[class*="rounded-full"]');
+    const contactItems = document.querySelectorAll('.contact-item');
+    const socialLinks = document.querySelectorAll('.contact-info a[class*="w-12"]');
+    const heroSocialLinks = document.querySelectorAll('.hero-social a');
+    
     if (isDark) {
+      // Update navbar
       navbar?.style.setProperty('background-color', '#0f172a');
-      navLinks?.forEach(link => link.style.setProperty('color', '#ffffff'));
-      icons?.forEach(icon => icon.style.setProperty('color', '#ffffff'));
+      navLinks?.forEach(link => (link as HTMLElement).style.setProperty('color', '#ffffff'));
+      icons?.forEach(icon => (icon as HTMLElement).style.setProperty('color', '#ffffff'));
+      
+      // Update body & sections
+      document.body.style.setProperty('background-color', '#0f172a');
+      document.body.style.setProperty('color', '#ffffff');
+      document.querySelectorAll('section').forEach(section => {
+        (section as HTMLElement).style.setProperty('background-color', '#0f172a');
+        (section as HTMLElement).style.setProperty('color', '#ffffff');
+      });
+      
+      // Update cards
+      cards.forEach(card => {
+        (card as HTMLElement).style.setProperty('background-color', '#1e293b');
+        (card as HTMLElement).style.setProperty('color', '#ffffff');
+      });
+      
+      // Update skill tags (sertifikasi)
+      skillTags.forEach(tag => {
+        (tag as HTMLElement).style.setProperty('background-color', '#1e293b');
+        (tag as HTMLElement).style.setProperty('color', '#ffffff');
+      });
+      
+      // Update tech tags in projects - darker shade but visible oval
+      techTags.forEach(tag => {
+        (tag as HTMLElement).style.setProperty('background-color', '#334155');
+        (tag as HTMLElement).style.setProperty('color', '#ffffff');
+      });
+      
+      // Contact items use CSS classes for hover effect - no JS override needed
+      
+      // Update social links
+      socialLinks.forEach(link => {
+        (link as HTMLElement).style.setProperty('background-color', '#1e293b');
+        (link as HTMLElement).style.setProperty('color', '#ffffff');
+      });
+      
+      // Update hero social links
+      heroSocialLinks.forEach(link => {
+        (link as HTMLElement).style.setProperty('background-color', '#1e293b');
+        (link as HTMLElement).style.setProperty('color', '#ffffff');
+      });
     } else {
+      // Update navbar
       navbar?.style.setProperty('background-color', '#ffffff');
-      navLinks?.forEach(link => link.style.setProperty('color', '#1e293b'));
-      icons?.forEach(icon => icon.style.setProperty('color', '#1e293b'));
+      navLinks?.forEach(link => (link as HTMLElement).style.setProperty('color', '#1e293b'));
+      icons?.forEach(icon => (icon as HTMLElement).style.setProperty('color', '#1e293b'));
+      
+      // Update body & sections
+      document.body.style.setProperty('background-color', '#f8fafc');
+      document.body.style.setProperty('color', '#1e293b');
+      document.querySelectorAll('section').forEach(section => {
+        (section as HTMLElement).style.setProperty('background-color', '#f8fafc');
+        (section as HTMLElement).style.setProperty('color', '#1e293b');
+      });
+      
+      // Update cards
+      cards.forEach(card => {
+        (card as HTMLElement).style.setProperty('background-color', '#ffffff');
+        (card as HTMLElement).style.setProperty('color', '#1e293b');
+      });
+      
+      // Update skill tags
+      skillTags.forEach(tag => {
+        (tag as HTMLElement).style.setProperty('background-color', '#ffffff');
+        (tag as HTMLElement).style.setProperty('color', '#1e293b');
+      });
+      
+      // Update tech tags
+      techTags.forEach(tag => {
+        (tag as HTMLElement).style.setProperty('background-color', '#f1f5f9');
+        (tag as HTMLElement).style.setProperty('color', '#1e293b');
+      });
+      
+      // Contact items use CSS classes - no JS override needed
+      
+      // Update social links
+      socialLinks.forEach(link => {
+        (link as HTMLElement).style.setProperty('background-color', '#f3f4f6');
+        (link as HTMLElement).style.setProperty('color', '#1e293b');
+      });
+      
+      // Update hero social links
+      heroSocialLinks.forEach(link => {
+        (link as HTMLElement).style.setProperty('background-color', '#ffffff');
+        (link as HTMLElement).style.setProperty('color', '#1e293b');
+      });
     }
   };
   
