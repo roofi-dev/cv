@@ -31,7 +31,7 @@
   }
   
   .dark {
-    @apply bg-dark-bg text-dark-text;
+    @apply bg-slate-900 text-white;
   }
   
   .light {
@@ -56,7 +56,7 @@
   }
   
   .dark .card {
-    @apply bg-dark-surface hover:shadow-primary/10;
+    @apply bg-slate-800 hover:shadow-primary/10;
   }
   
   .light .card {
