@@ -18,10 +18,10 @@ const { projects } = Astro.props;
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
     <div class="text-center mb-16">
       <h2 class="section-title">
-        Featured <span class="gradient-text">Projects</span>
+        Proyek <span class="gradient-text">Unggulan</span>
       </h2>
       <p class="section-subtitle max-w-2xl mx-auto">
-        A selection of projects I've worked on that showcase my skills
+        Pencapaian dan proyek yang telah saya kerjakan
       </p>
     </div>
     
@@ -29,44 +29,39 @@ const { projects } = Astro.props;
       {projects.map((project, index) => (
         <div class={`project-card group ${project.featured ? 'md:col-span-2 lg:col-span-1' : ''}`}>
           <div class="card h-full flex flex-col overflow-hidden border border-transparent hover:border-primary/30 transition-all duration-500">
-            <!-- Project Image Placeholder -->
-            <div class="relative h-48 md:h-56 overflow-hidden rounded-xl mb-6 bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20">
-              <div class="absolute inset-0 flex items-center justify-center">
-                <div class="text-6xl font-display font-bold opacity-20">
-                  {project.title.charAt(0)}
+            <!-- Project Image -->
+            <div 
+              class="relative h-48 md:h-56 overflow-hidden rounded-xl mb-6 bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 cursor-pointer project-image-container"
+              data-image={project.image?.asset?.url || ''}
+              data-title={project.title}
+            >
+              {project.image?.asset?.url ? (
+                <img 
+                  src={project.image.asset.url} 
+                  alt={project.title}
+                  class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                />
+              ) : (
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <div class="text-6xl font-display font-bold opacity-20">
+                    {project.title.charAt(0)}
+                  </div>
                 </div>
-              </div>
+              )}
               
-              <!-- Overlay on hover -->
-              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
-                <div class="flex gap-3">
-                  {project.liveUrl && (
-                    <a
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="px-4 py-2 bg-white text-black rounded-lg text-sm font-medium hover:bg-primary hover:text-white transition-colors"
-                    >
-                      Live Demo
-                    </a>
-                  )}
-                  {project.githubUrl && (
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="px-4 py-2 bg-white/20 text-white rounded-lg text-sm font-medium hover:bg-white hover:text-black transition-colors backdrop-blur-sm"
-                    >
-                      GitHub
-                    </a>
-                  )}
+              <!-- Overlay on hover with zoom icon -->
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <div class="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center transform scale-0 group-hover:scale-100 transition-transform duration-300">
+                  <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                  </svg>
                 </div>
               </div>
               
               {project.featured && (
-                <div class="absolute top-4 right-4">
+                <div class="absolute top-4 right-4 z-10">
                   <span class="px-3 py-1 text-xs font-medium bg-primary text-white rounded-full shadow-lg">
-                    Featured
+                    Unggulan
                   </span>
                 </div>
               )}
@@ -104,11 +99,24 @@ const { projects } = Astro.props;
         rel="noopener noreferrer"
         class="btn-secondary inline-flex items-center gap-2"
       >
-        <span>View All Projects</span>
+        <span>Lihat Semua Proyek</span>
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
         </svg>
       </a>
+    </div>
+  </div>
+  
+  <!-- Lightbox Modal -->
+  <div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/90 backdrop-blur-sm">
+    <button id="lightbox-close" class="absolute top-4 right-4 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors z-10">
+      <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+    <div class="relative max-w-5xl w-full">
+      <img id="lightbox-image" src="" alt="" class="w-full h-auto max-h-[85vh] object-contain rounded-2xl shadow-2xl" />
+      <p id="lightbox-title" class="text-white text-center mt-4 text-xl font-display font-semibold"></p>
     </div>
   </div>
 </section>
@@ -133,5 +141,65 @@ const { projects } = Astro.props;
         ease: 'power2.out',
       });
     },
+  });
+  
+  // Lightbox functionality
+  const lightbox = document.getElementById('lightbox') as HTMLElement;
+  const lightboxImage = document.getElementById('lightbox-image') as HTMLImageElement;
+  const lightboxTitle = document.getElementById('lightbox-title') as HTMLElement;
+  const lightboxClose = document.getElementById('lightbox-close') as HTMLButtonElement;
+  const imageContainers = document.querySelectorAll('.project-image-container');
+  
+  // Open lightbox
+  imageContainers.forEach((container) => {
+    container.addEventListener('click', () => {
+      const imageUrl = container.getAttribute('data-image');
+      const title = container.getAttribute('data-title');
+      
+      if (imageUrl) {
+        lightboxImage.src = imageUrl;
+        lightboxImage.alt = title || '';
+        lightboxTitle.textContent = title || '';
+        lightbox.classList.remove('hidden');
+        lightbox.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+        
+        // Animate in
+        gsap.fromTo(lightbox, 
+          { opacity: 0 }, 
+          { opacity: 1, duration: 0.3, ease: 'power2.out' }
+        );
+        gsap.fromTo(lightboxImage, 
+          { scale: 0.8, opacity: 0 }, 
+          { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(1.7)', delay: 0.1 }
+        );
+      }
+    });
+  });
+  
+  // Close lightbox
+  const closeLightbox = () => {
+    gsap.to(lightbox, {
+      opacity: 0,
+      duration: 0.2,
+      ease: 'power2.in',
+      onComplete: () => {
+        lightbox.classList.add('hidden');
+        lightbox.classList.remove('flex');
+        document.body.style.overflow = '';
+      }
+    });
+  };
+  
+  lightboxClose?.addEventListener('click', closeLightbox);
+  lightbox?.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+  
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !lightbox.classList.contains('hidden')) {
+      closeLightbox();
+    }
   });
 </script>
