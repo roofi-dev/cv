@@ -20,7 +20,7 @@ const navLinks = [
       <!-- Desktop Navigation -->
       <div class="hidden md:flex items-center space-x-1">
         {navLinks.map((link) => (
-          <a href={link.href} class="nav-link text-slate-900 dark:text-white">
+          <a href={link.href} class="nav-link">
             {link.label}
           </a>
         ))}
@@ -31,10 +31,10 @@ const navLinks = [
           class="ml-4 p-2 rounded-lg transition-colors duration-300 hover:bg-primary/10"
           aria-label="Toggle dark mode"
         >
-          <svg id="sun-icon" class="w-6 h-6 hidden dark:block text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg id="sun-icon" class="w-6 h-6 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
           </svg>
-          <svg id="moon-icon" class="w-6 h-6 block dark:hidden text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg id="moon-icon" class="w-6 h-6 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
           </svg>
         </button>
@@ -47,10 +47,10 @@ const navLinks = [
           class="p-2 rounded-lg transition-colors duration-300 hover:bg-primary/10 mr-2"
           aria-label="Toggle dark mode"
         >
-          <svg class="w-6 h-6 hidden dark:block text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-6 h-6 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
           </svg>
-          <svg class="w-6 h-6 block dark:hidden text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-6 h-6 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
           </svg>
         </button>
@@ -60,7 +60,7 @@ const navLinks = [
           class="p-2 rounded-lg transition-colors duration-300 hover:bg-primary/10"
           aria-label="Open menu"
         >
-          <svg class="w-6 h-6 text-slate-900 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
@@ -115,10 +115,17 @@ const navLinks = [
   
   const updateNavbarTheme = () => {
     const isDark = document.documentElement.classList.contains('dark');
+    const navLinks = navbar?.querySelectorAll('.nav-link');
+    const icons = navbar?.querySelectorAll('svg');
+    
     if (isDark) {
       navbar?.style.setProperty('background-color', '#0f172a');
+      navLinks?.forEach(link => link.style.setProperty('color', '#ffffff'));
+      icons?.forEach(icon => icon.style.setProperty('color', '#ffffff'));
     } else {
       navbar?.style.setProperty('background-color', '#ffffff');
+      navLinks?.forEach(link => link.style.setProperty('color', '#1e293b'));
+      icons?.forEach(icon => icon.style.setProperty('color', '#1e293b'));
     }
   };
   
