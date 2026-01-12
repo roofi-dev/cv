@@ -176,13 +176,13 @@ export async function getSkills(): Promise<Skill[]> {
     { name: 'VMware/Hyper-V/XCP-NG', level: 70, category: 'DevOps', icon: 'vm' },
     { name: 'Cloud Storage Solutions', level: 70, category: 'DevOps', icon: 'cloud' },
     // Jaringan & Keamanan - Mahir
-    { name: 'TCP/IP', level: 90, category: 'Tools', icon: 'network' },
-    { name: 'LAN/WAN Configuration', level: 90, category: 'Tools', icon: 'lan' },
-    { name: 'DHCP/DNS', level: 90, category: 'Tools', icon: 'dns' },
+    { name: 'TCP/IP', level: 90, category: 'Networking', icon: 'network' },
+    { name: 'LAN/WAN Configuration', level: 90, category: 'Networking', icon: 'lan' },
+    { name: 'DHCP/DNS', level: 90, category: 'Networking', icon: 'dns' },
     // Jaringan & Keamanan - Menengah
-    { name: 'Cisco Routing/Switching', level: 70, category: 'Tools', icon: 'cisco' },
-    { name: 'VPN', level: 70, category: 'Tools', icon: 'vpn' },
-    { name: 'Firewall Management', level: 70, category: 'Tools', icon: 'firewall' },
+    { name: 'Cisco Routing/Switching', level: 70, category: 'Networking', icon: 'cisco' },
+    { name: 'VPN', level: 70, category: 'Networking', icon: 'vpn' },
+    { name: 'Firewall Management', level: 70, category: 'Networking', icon: 'firewall' },
   ];
 }
 
