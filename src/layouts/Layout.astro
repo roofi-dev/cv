@@ -25,15 +25,16 @@ const { title, description = 'Personal CV Website - Showcasing my skills and exp
     <slot />
     
     <script>
-      // Dark mode initialization
+      // Dark mode initialization - default to dark
       const initTheme = () => {
         const savedTheme = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         
-        if (savedTheme === 'light' || (!savedTheme && !prefersDark)) {
+        // Only switch to light if user explicitly chose light mode
+        if (savedTheme === 'light') {
           document.documentElement.classList.remove('dark');
           document.documentElement.classList.add('light');
         } else {
+          // Default to dark mode
           document.documentElement.classList.remove('light');
           document.documentElement.classList.add('dark');
         }
